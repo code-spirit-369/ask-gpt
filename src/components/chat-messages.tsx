@@ -1,8 +1,8 @@
 import { Session } from "next-auth";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { collection, orderBy, query } from "@firebase/firestore";
 
 import { ScrollArea } from "./ui/scroll-area";
-import { collection, orderBy, query } from "@firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Message } from "./message";
 

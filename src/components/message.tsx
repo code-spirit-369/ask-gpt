@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Markdown from "react-markdown";
 import { DocumentData } from "@firebase/firestore";
 
@@ -5,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Message = ({ message }: { message: DocumentData }) => {
   const isAIMessage = message.user._id === "ask-gpt";
+
   return (
     <div
       key={message.id}
@@ -24,12 +26,29 @@ export const Message = ({ message }: { message: DocumentData }) => {
               .join("")}`}
           </AvatarFallback>
         </Avatar>
-        <div
-          className={`mx-2 p-3 rounded-lg ${
-            isAIMessage ? "bg-secondary" : "bg-primary text-primary-foreground"
-          }`}
-        >
-          <Markdown>{message.text}</Markdown>
+
+        <div className="mx-2 space-y-2">
+          {message.imageUrl && (
+            <div className="flex justify-end">
+              <Image
+                src={message.imageUrl}
+                alt="Uploaded Image"
+                width={1000}
+                height={1000}
+                className="rounded-lg w-auto h-40 object-cover"
+              />
+            </div>
+          )}
+
+          <div
+            className={`p-3 rounded-lg ${
+              isAIMessage
+                ? "bg-secondary"
+                : "bg-primary text-primary-foreground"
+            }`}
+          >
+            <Markdown>{message.text}</Markdown>
+          </div>
         </div>
       </div>
     </div>

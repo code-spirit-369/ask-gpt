@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { ClockIcon, MessageSquareIcon, ZapIcon } from "lucide-react";
+import {
+  ClockIcon,
+  ImagePlusIcon,
+  MessageSquareIcon,
+  ZapIcon,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const cards = [
@@ -22,6 +27,12 @@ const cards = [
     icon: ClockIcon,
     title: "Real-Time Updates",
     description: "Receive real-time updates, as you would in a live chat",
+  },
+  {
+    id: 4,
+    icon: ImagePlusIcon,
+    title: "Image Vision",
+    description: "Upload images to Ask-GPT and receive responses",
   },
 ];
 
@@ -60,7 +71,7 @@ export default function ChatPage() {
 
       <section className="w-full flex items-center justify-center">
         <div className="container px-4 md:px-6">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {cards.map((card) => (
               <Card key={card.id}>
                 <CardHeader>

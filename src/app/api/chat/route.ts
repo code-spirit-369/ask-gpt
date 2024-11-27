@@ -1,30 +1,36 @@
+import { xai } from "@ai-sdk/xai";
 import { firestore } from "firebase-admin";
 import { NextResponse } from "next/server";
+import { generateText, UserContent } from "ai";
 
-import { xai } from "@/lib/xai";
 import { adminDB } from "@/lib/firebaseAdmin";
 
 export async function POST(request: Request) {
-  const { input, chatId, user } = await request.json();
+  const { input, imageUrl, chatId, user } = await request.json();
 
-  const res = await xai.chat.completions.create({
-    model: "grok-beta",
+  const userMessage: UserContent = imageUrl
+    ? [
+        { type: "text", text: input },
+        { type: "image", image: new URL(imageUrl) },
+      ]
+    : [{ type: "text", text: input }];
+
+  const { text } = await generateText({
+    model: xai("grok-vision-beta"),
     messages: [
       {
-        role: "system",
-        content: "You are a helpful assistant.",
+        role: "assistant",
+        content: "You are a helpful assistant. Your name is Ask-GPT.",
       },
       {
         role: "user",
-        content: input,
+        content: userMessage,
       },
     ],
   });
 
-  const response = res.choices[0].message.content;
-
   const message: Message = {
-    text: response || "RTGPT was unable to find an answer for that!",
+    text: text || "AskGPT was unable to find an answer for that!",
     createdAt: firestore.Timestamp.now(),
     user: {
       _id: "ask-gpt",
